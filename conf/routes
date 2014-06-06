@@ -5,5 +5,10 @@
 # Home page
 GET     /                           controllers.Application.index
 
+# Event
+GET     /event/create/              controllers.event.EventCreate.index
+POST    /event/create/create        controllers.event.EventCreate.create
+GET     /event/generate/            controllers.event.EventCreate.generate
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
