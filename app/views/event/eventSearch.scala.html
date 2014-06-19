@@ -6,7 +6,7 @@
   @helper.form(action = controllers.event.routes.EventSearch.search()){
     <div class="container">
       <fieldset>
-        <legend>検索条件</legend>
+        <legend>イベントの情報</legend>
         @helper.inputText(eventForm("eventId"))
         @helper.inputText(eventForm("eventNm"))
         <button type="submit" class="btn btn-primary">検索</button>
@@ -30,6 +30,9 @@
                 <td>
                   <a href="@controllers.event.routes.EventUpdate.index(event.id)">
                     <i class="glyphicon glyphicon-edit"></i>
+                  </a>
+                  <a href="@controllers.event.routes.EventSearch.delete(event.id)">
+                    <i class="glyphicon glyphicon-remove"></i>
                   </a>
                 </td>
               </tr>

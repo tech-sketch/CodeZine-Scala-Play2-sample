@@ -41,6 +41,11 @@ object Events {
     Event.filter(_.id === e.id).update(e)
   }
 
+  /** 削除 */
+  def delete(id: Int) = database.withTransaction { implicit session: Session =>
+    Event.filter(_.id === id).delete
+  }
+
   def model = database.withSession { implicit session =>
     val tables = MTable.getTables(None, Some("TECHAPP"), None, None).list
     createModel(tables, JdbcDriver)

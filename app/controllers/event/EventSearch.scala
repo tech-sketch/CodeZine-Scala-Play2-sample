@@ -26,4 +26,10 @@ object EventSearch extends Controller {
 
     Ok(views.html.event.eventSearch(form, events))
   }
+
+  /** 削除 */
+  def delete(id: Int) = Action { implicit request =>
+    Events.delete(id)
+    Ok(views.html.event.eventSearch(eventForm, null))
+  }
 }
