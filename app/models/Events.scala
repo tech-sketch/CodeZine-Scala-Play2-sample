@@ -28,22 +28,29 @@ object Events {
   /** ID検索 */
   def findById(id: Int): EventRow =
     database.withTransaction { implicit session: Session =>
-      Event.filter(_.id === id).first
+      val q = Event.filter(_.id === id)
+      Logger.debug(q.selectStatement)
+      q.first
     }
 
   /** 登録 */
   def create(e: EventRow) = database.withTransaction { implicit session: Session =>
+    Logger.debug(Event.insertStatement)
     Event.insert(e)
   }
 
   /** 更新 */
   def update(e: EventRow) = database.withTransaction { implicit session: Session =>
-    Event.filter(_.id === e.id).update(e)
+    val q = Event.filter(_.id === e.id)
+    Logger.debug(q.updateStatement)
+    q.update(e)
   }
 
   /** 削除 */
   def delete(id: Int) = database.withTransaction { implicit session: Session =>
-    Event.filter(_.id === id).delete
+    val q = Event.filter(_.id === id)
+    Logger.debug(q.deleteStatement)
+    q.delete
   }
 
   def model = database.withSession { implicit session =>
