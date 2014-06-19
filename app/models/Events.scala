@@ -13,11 +13,6 @@ object Events {
   /** DBコネクション */
   val database = Database.forDataSource(DB.getDataSource())
 
-  /** 登録 */
-  def create(e: EventRow) = database.withTransaction { implicit session: Session =>
-    Event.insert(e)
-  }
-
   /** 検索 */
   def find(eventId: String, eventNm: String): List[EventRow] =
     database.withTransaction { implicit session: Session =>
@@ -29,6 +24,22 @@ object Events {
 
       return q.list
     }
+
+  /** ID検索 */
+  def findById(id: Int): EventRow =
+    database.withTransaction { implicit session: Session =>
+      Event.filter(_.id === id).first
+    }
+
+  /** 登録 */
+  def create(e: EventRow) = database.withTransaction { implicit session: Session =>
+    Event.insert(e)
+  }
+
+  /** 更新 */
+  def update(e: EventRow) = database.withTransaction { implicit session: Session =>
+    Event.filter(_.id === e.id).update(e)
+  }
 
   def model = database.withSession { implicit session =>
     val tables = MTable.getTables(None, Some("TECHAPP"), None, None).list
