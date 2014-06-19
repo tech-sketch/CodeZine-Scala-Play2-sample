@@ -20,7 +20,6 @@ object Events {
       var q = if (eventId.isEmpty) Event else Event.filter(_.eventId === eventId)
       q = if (eventNm.isEmpty) q else q.filter(_.eventNm like s"%$eventNm%")
       q = q.sortBy(_.eventNm)
-      Logger.debug(q.selectStatement)
 
       return q.list
     }
@@ -28,29 +27,22 @@ object Events {
   /** ID検索 */
   def findById(id: Int): EventRow =
     database.withTransaction { implicit session: Session =>
-      val q = Event.filter(_.id === id)
-      Logger.debug(q.selectStatement)
-      q.first
+      Event.filter(_.id === id).first
     }
 
   /** 登録 */
   def create(e: EventRow) = database.withTransaction { implicit session: Session =>
-    Logger.debug(Event.insertStatement)
     Event.insert(e)
   }
 
   /** 更新 */
   def update(e: EventRow) = database.withTransaction { implicit session: Session =>
-    val q = Event.filter(_.id === e.id)
-    Logger.debug(q.updateStatement)
-    q.update(e)
+    val q = Event.filter(_.id === e.id).update(e)
   }
 
   /** 削除 */
   def delete(id: Int) = database.withTransaction { implicit session: Session =>
-    val q = Event.filter(_.id === id)
-    Logger.debug(q.deleteStatement)
-    q.delete
+    val q = Event.filter(_.id === id).delete
   }
 
   def model = database.withSession { implicit session =>
