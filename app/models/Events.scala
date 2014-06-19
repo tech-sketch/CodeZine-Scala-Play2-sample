@@ -22,9 +22,9 @@ object Events {
   def find(eventId: String, eventNm: String): List[EventRow] =
     database.withTransaction { implicit session: Session =>
 
-      var q = if (eventId.isEmpty) Event else Event.filter(_.eventId === eventId)
+      var q = Event.sortBy(_.eventNm)
+      q = if (eventId.isEmpty) q else q.filter(_.eventId === eventId)
       q = if (eventNm.isEmpty) q else q.filter(_.eventNm like s"%$eventNm%")
-      q = q.sortBy(_.eventNm)
       Logger.debug(q.selectStatement)
 
       return q.list
